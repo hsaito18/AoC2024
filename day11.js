@@ -25,20 +25,22 @@ const handleStone = (num) => {
 };
 
 let uniques = {};
+let uniques2 = {};
 
 for (let [rs, line] of Object.entries(input)) {
   const r = Number(rs);
   let stones = line.split(" ").map((x) => Number(x));
-  let stone1 = [stones[0]];
   for (const stone of stones) {
     if (stone in uniques) {
       uniques[stone] = uniques[stone] + 1;
+      uniques2[stone] = uniques2[stone] + 1;
     } else {
       uniques[stone] = 1;
+      uniques2[stone] = 1;
     }
   }
 
-  for (let i = 0; i < 75; i++) {
+  for (let i = 0; i < 25; i++) {
     let nextUniques = Object.assign({}, uniques);
     for (const [k, v] of Object.entries(uniques)) {
       const out = handleStone(Number(k));
@@ -54,10 +56,31 @@ for (let [rs, line] of Object.entries(input)) {
     }
     uniques = nextUniques;
   }
+
+  for (let i = 0; i < 75; i++) {
+    let nextUniques = Object.assign({}, uniques2);
+    for (const [k, v] of Object.entries(uniques2)) {
+      const out = handleStone(Number(k));
+      for (const o of out) {
+        if (o in nextUniques) {
+          nextUniques[o] = nextUniques[o] + v;
+        } else {
+          nextUniques[o] = v;
+        }
+      }
+      nextUniques[k] = nextUniques[k] - v;
+      if (nextUniques[k] === 0) delete nextUniques[k];
+    }
+    uniques2 = nextUniques;
+  }
 }
 
 for (const [k, v] of Object.entries(uniques)) {
   out += v;
+}
+
+for (const [k, v] of Object.entries(uniques2)) {
+  out2 += v;
 }
 
 console.log(out);
