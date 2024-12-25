@@ -1,0 +1,76 @@
+x00 AND y00 -> CARRY_FLAG_0 (bdk)
+x00 XOR y00 -> z00
+					
+x01 AND y01 -> INTER_FLAG? (qkj)  ----> INTERFLAG_1 OR REINTERFLAG_1 -> CARRY_FLAG_1 (spt)
+x01 XOR y01 -> RES_1 (rsq) -----> CARRY_FLAG_0 XOR RES_1 -> z01
+			   -----> CARRY_FLAG_0 AND RES_1 -> REINTERFLAG_1
+
+
+
+function (x, y, prevcarry) {
+	let intflag = x AND y
+	let intres = x XOR y
+	let secondres = intres XOR prevcarry
+	let secondflag = intres AND prevcarry
+	let actualcarry = intflag OR secondflag
+	let actualresult = secondres
+	return [actualcarry, actualresult]
+}
+
+
+z16 hmk
+z20 fhp
+
+tpc rvf
+
+fcd z33
+
+
+^^^ GOOD!
+
+fcd z33 ??? z33 HAS to be changed somehow...
+??
+
+KNOWN FACTS:
+tpc is a 'flag' of some kind. being made as a XOR. Has to be made as an AND. definitely something wrong. MUST BE ONE SIDE OF THE SWAP!
+rvf has XOR and AND with dkb. so it is either a intres or a prevcarry. currently made as an OR (carry)
+dkb made from OR.
+rfd AND from x27 y27 (intflag27). it is AND/XOR bound with smf. (smf is intres of x33)
+
+
+WE KNOW THAT 3/4 of the swaps are with z16,z20,z33.....
+
+TRY SWAPPING TPC AND Z33??? ONE SWAP LEFT! ---- WITHOUT A DOUBT INCORRECT....
+
+
+
+
+assumming z33 fcd correct... so fcd carry 33... it kind of makes sense...
+smf intres 33
+rfd carry 32
+jgr secondflag33
+z33 result :)
+wkw intflag
+jgr OR wkw => fcd GOOD.
+
+
+
+-- dkb is correct...
+
+GATE1 -> rvf === tpc === rfd
+GATE2 -> tpc === rvf
+GATE3 -> rfd === tpc
+
+
+
+rvf tpc
+tpc rfd
+
+
+---- WRONG
+
+
+fcd z33
+
+
+dkb rmv
